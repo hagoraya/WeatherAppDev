@@ -3,44 +3,50 @@
     <div id="temp-div">
       <div id="display-temp">
         <div>
-            {{icons[forecast.currently.icon]}}
-            {{forecast.currently.temperature}}°C
-            {{forecast.currently.summary}}             
+          {{icons[forecast.currently.icon]}}
+          {{forecast.currently.temperature}}°C
+          {{forecast.currently.summary}}
         </div>
       </div>
     </div>
     <div id="more-info-div">
       <div id="more-info-div1">
+        <div>
+          <b-input-group :key="sm" :size="size" class="mb-3" >
+            <b-form-input></b-form-input>
+            <b-input-group-append>
+              <b-button size="sm" text="Search" variant="success">Seach</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </div>
       </div>
       <div id="more-info-div2"></div>
       <div id="more-info-div3"></div>
-
     </div>
   </div>
 </template>
 
 <script>
-
 /* eslint-disable no-console */
 
-import API from '../lib/API';
+import API from "../lib/API";
 
 export default {
   name: "HelloWorld",
   data() {
     return {
       forecast: {},
-      icons:{
-        'clear-day': '🌞',
-        'clear-night': '🌙',
-        'rain': '🌧',
-        'snow': '🌨',
-        'sleet': '⛷',
-        'wind': '💨',
-        'fog': '🌫',
-        'cloudy': '☁',
-        'partly-cloudy-day': '⛅',
-        'partly-cloudy-night': '🌚',
+      icons: {
+        "clear-day": "🌞",
+        "clear-night": "🌙",
+        "rain": "🌧",
+        "snow": "🌨",
+        "sleet": "⛷",
+        "wind": "💨",
+        "fog": "🌫",
+        "cloudy": "☁",
+        "partly-cloudy-day": "⛅",
+        "partly-cloudy-night": "🌚"
       }
     };
   },
@@ -49,16 +55,12 @@ export default {
     msg: String
   },
 
-  mounted(){
+  mounted() {
     API.getForecast().then(result => {
       console.log(result);
       this.forecast = result;
     });
-  },
-
- 
-
-
+  }
 };
 </script>
 
@@ -98,13 +100,15 @@ export default {
   box-shadow: black;
 }
 
-#more-info-div1{
+#more-info-div1 {
+  padding-top: 10px;
+  padding-right: 8px;
+  padding-left: 8px;
+}
+#more-info-div2 {
   border: yellow solid;
 }
-#more-info-div2{
-  border: yellow solid;
-}
-#more-info-div3{
+#more-info-div3 {
   border: yellow solid;
 }
 </style>
