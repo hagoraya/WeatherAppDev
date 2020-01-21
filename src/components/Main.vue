@@ -1,27 +1,30 @@
 <template>
   <div class="main-div">
-    <div id="temp-div"></div>
-    <div id="more-info-div"></div>
-    <h1>HEEYYY </h1>
-    
+    <div id="temp-div">
+      <div id="display-temp">
+        <h1>64</h1>
+      </div>
+    </div>
+    <div id="more-info-div">
+      <h3>HEYY</h3>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
     msg: String
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
-.main-div{
-  display: inline-block;
+.main-div {
+  display: grid;
+  grid-template-columns: 70% 30%;
   background: grey;
   height: 100vh;
   width: 100vw;
@@ -29,28 +32,20 @@ export default {
   background-size: cover;
 }
 
-
-#temp-div{
-  display: inline-block;
-  width: 70%;
-  height: 100vh;
+#display-temp {
+  background: bisque;
+  bottom: 0;
+  right: 0;
 }
 
-#more-info-div{
-  display: inline-block;
-  width: 30%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, .35);  
+#temp-div {
+
+}
+
+#more-info-div {
+
+  background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(5px);
   box-shadow: black;
-
-
-
 }
-
-
-
-
-
-
 </style>
