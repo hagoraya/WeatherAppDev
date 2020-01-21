@@ -2,21 +2,38 @@
   <div class="main-div">
     <div id="temp-div">
       <div id="display-temp">
-        <h1>64</h1>
+        <div>64</div>
       </div>
     </div>
     <div id="more-info-div">
-      <h3>HEYY</h3>
+      <div id="more-info-div1">
+
+      </div>
+      <div id="more-info-div2"></div>
+      <div id="more-info-div3"></div>
+
     </div>
   </div>
 </template>
 
 <script>
+
+/* eslint-disable no-console */
+
+
+import API from '../lib/API';
+
 export default {
   name: "HelloWorld",
   props: {
     msg: String
+  },
+
+  mounted(){
+    API.getForecast();
   }
+
+
 };
 </script>
 
@@ -24,7 +41,7 @@ export default {
 <style scoped>
 .main-div {
   display: grid;
-  grid-template-columns: 70% 30%;
+  grid-template-columns: 2fr 0.7fr;
   background: grey;
   height: 100vh;
   width: 100vw;
@@ -33,19 +50,36 @@ export default {
 }
 
 #display-temp {
-  background: bisque;
-  bottom: 0;
-  right: 0;
+  grid-row: 2/2;
+  color: aliceblue;
+  justify-self: left;
+  padding-top: 100px;
+  padding-left: 100px;
+  font-size: 7rem;
 }
 
 #temp-div {
-
+  display: grid;
+  /* Split the grid so it has two hafs horizonatally*/
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
 }
 
 #more-info-div {
-
+  display: grid;
+  grid-template-rows: 2fr 1fr 1fr;
   background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(5px);
   box-shadow: black;
+}
+
+#more-info-div1{
+  border: yellow solid;
+}
+#more-info-div2{
+  border: yellow solid;
+}
+#more-info-div3{
+  border: yellow solid;
 }
 </style>
