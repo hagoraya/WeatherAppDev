@@ -2,12 +2,15 @@
   <div class="main-div">
     <div id="temp-div">
       <div id="display-temp">
-        <div>64</div>
+        <div>
+            {{icons[forecast.currently.icon]}}
+            {{forecast.currently.temperature}}°C
+            {{forecast.currently.summary}}             
+        </div>
       </div>
     </div>
     <div id="more-info-div">
       <div id="more-info-div1">
-
       </div>
       <div id="more-info-div2"></div>
       <div id="more-info-div3"></div>
@@ -20,18 +23,40 @@
 
 /* eslint-disable no-console */
 
-
 import API from '../lib/API';
 
 export default {
   name: "HelloWorld",
+  data() {
+    return {
+      forecast: {},
+      icons:{
+        'clear-day': '🌞',
+        'clear-night': '🌙',
+        'rain': '🌧',
+        'snow': '🌨',
+        'sleet': '⛷',
+        'wind': '💨',
+        'fog': '🌫',
+        'cloudy': '☁',
+        'partly-cloudy-day': '⛅',
+        'partly-cloudy-night': '🌚',
+      }
+    };
+  },
+
   props: {
     msg: String
   },
 
   mounted(){
-    API.getForecast();
-  }
+    API.getForecast().then(result => {
+      console.log(result);
+      this.forecast = result;
+    });
+  },
+
+ 
 
 
 };
@@ -55,7 +80,7 @@ export default {
   justify-self: left;
   padding-top: 100px;
   padding-left: 100px;
-  font-size: 7rem;
+  font-size: 3rem;
 }
 
 #temp-div {
