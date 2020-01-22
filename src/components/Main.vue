@@ -1,21 +1,28 @@
 <template>
   <div class="main-div">
     <div id="temp-div">
-      <div id="display-temp">
+      <div id="display-temp" v-if="forecast">
         <div>
           {{icons[forecast.currently.icon]}}
-          {{forecast.currently.temperature}}°C
+          {{forecast.currently.temperature}}
+          <p v-if="fc === 'us'" style="display:inline">°F</p>
+          <p v-else style="display:inline">°C</p>
+
           {{forecast.currently.summary}}
+        </div>
+        <div>
+          {{address.name}}
+          {{forecast.flags.units}}
         </div>
       </div>
     </div>
     <div id="more-info-div">
       <div id="more-info-div1">
         <div>
-          <b-input-group :key="sm" :size="size" class="mb-3" >
-            <b-form-input></b-form-input>
+          <b-input-group class="mb-3">
+            <b-form-input v-model="location"></b-form-input>
             <b-input-group-append>
-              <b-button size="sm" text="Search" variant="success">Seach</b-button>
+              <b-button v-on:click="updateLocation" size="sm" text="Search" variant="success">Seach</b-button>
             </b-input-group-append>
           </b-input-group>
         </div>
@@ -31,11 +38,15 @@
 
 import API from "../lib/API";
 
+
 export default {
   name: "HelloWorld",
   data() {
     return {
-      forecast: {},
+      location: "",
+      address : "",
+      fc: "ca",
+      forecast: null,
       icons: {
         "clear-day": "🌞",
         "clear-night": "🌙",
@@ -51,17 +62,41 @@ export default {
     };
   },
 
+  methods: {
+    forc(){
+        this.fc = this.forecast.flags.units;
+    },
+
+
+    updateLocation() {
+      API.getCoordinates(this.location).then(result => {
+        this.loadWeather(result.latitude, result.longitude);
+      });
+    },
+
+    loadWeather(lat, lng) {
+      API.getAddress(lat, lng).then(result => {
+        this.address = result;
+      });
+
+      API.getForecast(lat, lng).then(result => {
+        this.forecast = result;
+        this.forc()
+        
+      });
+    }
+  },
+
   props: {
     msg: String
   },
 
   mounted() {
-    API.getForecast().then(result => {
-      console.log(result);
-      this.forecast = result;
-    });
+    //Default load wether with California
+    this.loadWeather('34.070025', '-118.294616');
   }
 };
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

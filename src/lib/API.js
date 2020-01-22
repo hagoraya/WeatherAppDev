@@ -6,6 +6,7 @@ const GEO_API_URL = `${proxy}https://darksky.net/geo?q=`;
 
 /* eslint-disable no-console */
 
+//Incase user enters the location 
 function getCoordinates(location) { 
     return fetch(`${GEO_API_URL}${location}`)
     .then(response => response.json());
