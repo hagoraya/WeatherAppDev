@@ -22,9 +22,19 @@
             </b-input-group-append>
           </b-input-group>
         </div>
+        <div id="majorCities">
+          <p id="Los Angeles" @click="newPresetLocation($event)">Los Angeles</p>
+          <p id="Toronto" @click="newPresetLocation($event)">Toronto</p>
+          <p id="London" @click="newPresetLocation($event)">London</p>
+          <p id="Istanbul" @click="newPresetLocation($event)">Istanbul</p>
+          <p id="Dehli" @click="newPresetLocation($event)">Dehli</p>
+          <p id="Shanghai" @click="newPresetLocation($event)">Shanghai</p>
+          <p id="Tokyo" @click="newPresetLocation($event)">Tokyo</p>
+
+        </div>
       </div>
       <div id="more-info-div2">
-        <p id="weatherdetails">Weather details</p>
+        <p id="weatherdetails">Weather Details</p>
         <div class="weathericon">
           <v-icon class="icons" name="wind" scale="3"></v-icon>
           <p>{{forecast.currently.windSpeed}}km/h</p>
@@ -86,6 +96,17 @@ export default {
   },
 
   methods: {
+    
+    newPresetLocation(clicked_id){
+      console.log(clicked_id.srcElement.id);
+      this.location = clicked_id.srcElement.id;
+      this.updateLocation();
+
+
+    },
+
+
+
     changeBackground(icon) {
       console.log("changing background.. to: " + icon);
       var backimage = document.getElementById("main-div");
@@ -169,6 +190,8 @@ export default {
 
 #more-info-div1 {
   /*Seach box div */
+  display: grid;
+  grid-template-rows: 0.5fr 2fr;
   padding-top: 10px;
   padding-right: 8px;
   padding-left: 8px;
@@ -207,8 +230,15 @@ hr {
 }
 
 #weatherdetails{
+  display: inline;
   grid-column: 1 / 4;
-  margin-top: 5px;
+  padding-top: 5px;
+  text-align: center;
+}
+
+#majorCities{
+  color: whitesmoke;
+  text-align: left;
 }
 
 </style>
