@@ -1,5 +1,5 @@
 <template>
-  <div class="main-div">
+  <div id="main-div">
     <div id="temp-div">
       <div id="display-temp" v-if="forecast">
         <div>
@@ -7,13 +7,9 @@
           {{forecast.currently.temperature}}
           <p v-if="fc === 'us'" style="display:inline">°F</p>
           <p v-else style="display:inline">°C</p>
-
           {{forecast.currently.summary}}
         </div>
-        <div>
-          {{address.name}}
-          {{forecast.flags.units}}
-        </div>
+        <div>{{address.name}}</div>
       </div>
     </div>
     <div id="more-info-div">
@@ -27,7 +23,22 @@
           </b-input-group>
         </div>
       </div>
-      <div id="more-info-div2"></div>
+      <div id="more-info-div2">
+        <p id="weatherdetails">Weather details</p>
+        <div class="weathericon">
+          <v-icon class="icons" name="wind" scale="3"></v-icon>
+          <p>{{forecast.currently.windSpeed}}km/h</p>
+        </div>
+        <div class="weathericon" >
+          <v-icon class="icons" name="tint" scale="3"></v-icon>
+          <p>{{precentpp}}%</p>
+        </div>
+        <div class="weathericon">
+          <v-icon class="icons" name="sun" scale="3" ></v-icon>
+          <p>{{forecast.currently.uvIndex}} UV Index</p>
+        </div>
+      </div>
+
       <div id="more-info-div3"></div>
     </div>
   </div>
@@ -38,24 +49,36 @@
 
 import API from "../lib/API";
 
-
 export default {
   name: "HelloWorld",
   data() {
     return {
+      precentpp: 0,
       location: "",
-      address : "",
+      address: "",
       fc: "ca",
       forecast: null,
       icons: {
         "clear-day": "🌞",
         "clear-night": "🌙",
-        "rain": "🌧",
-        "snow": "🌨",
-        "sleet": "⛷",
-        "wind": "💨",
-        "fog": "🌫",
-        "cloudy": "☁",
+        rain: "🌧",
+        snow: "🌨",
+        sleet: "⛷",
+        wind: "💨",
+        fog: "🌫",
+        cloudy: "☁",
+        "partly-cloudy-day": "⛅",
+        "partly-cloudy-night": "🌚"
+      },
+      backgrounds: {
+        "clear-day": "../assets/images/clear-day.jpg",
+        "clear-night": "🌙",
+        rain: "🌧",
+        snow: "🌨",
+        sleet: "⛷",
+        wind: "../assets/images/wind.jpg",
+        fog: "🌫",
+        cloudy: "../assets/images/cloudy.jpg",
         "partly-cloudy-day": "⛅",
         "partly-cloudy-night": "🌚"
       }
@@ -63,10 +86,17 @@ export default {
   },
 
   methods: {
-    forc(){
-        this.fc = this.forecast.flags.units;
+    changeBackground(icon) {
+      console.log("changing background.. to: " + icon);
+      var backimage = document.getElementById("main-div");
+      var imgUrl = "./assets/images/x.jpg'";
+      backimage.style.backgroundImage = imgUrl;
+      console.log(backimage.style);
     },
 
+    forc() {
+      this.fc = this.forecast.flags.units;
+    },
 
     updateLocation() {
       API.getCoordinates(this.location).then(result => {
@@ -80,9 +110,11 @@ export default {
       });
 
       API.getForecast(lat, lng).then(result => {
+        console.log(result);
         this.forecast = result;
-        this.forc()
-        
+        this.precentpp = this.forecast.currently.precipProbability * 100,
+        this.forc();
+        this.changeBackground(this.forecast.currently.icon);
       });
     }
   },
@@ -93,21 +125,20 @@ export default {
 
   mounted() {
     //Default load wether with California
-    this.loadWeather('34.070025', '-118.294616');
+    this.loadWeather("34.070025", "-118.294616");
   }
 };
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.main-div {
+#main-div {
   display: grid;
-  grid-template-columns: 2fr 0.7fr;
+  grid-template-columns: 1fr 0.3fr;
   background: grey;
   height: 100vh;
   width: 100vw;
-  background-image: url("../assets/images/clouds1.jpg");
+  background-image: url("../assets/images/fog.jpg");
   background-size: cover;
 }
 
@@ -125,6 +156,7 @@ export default {
   /* Split the grid so it has two hafs horizonatally*/
   grid-template-rows: 1fr 1fr;
   align-items: center;
+  justify-items: center;
 }
 
 #more-info-div {
@@ -136,14 +168,47 @@ export default {
 }
 
 #more-info-div1 {
+  /*Seach box div */
   padding-top: 10px;
   padding-right: 8px;
   padding-left: 8px;
+  border: solid red;
 }
 #more-info-div2 {
-  border: yellow solid;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.2fr 1fr;
+  color: antiquewhite;
+  border: solid yellow;
+  align-items: center;
 }
 #more-info-div3 {
-  border: yellow solid;
+  border: solid gray;
 }
+
+#more-weather-info {
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border-top: 1px solid #ccc;
+  width: 90%;
+}
+
+.icons{
+  color: whitesmoke;
+  margin: 15px;
+  
+}
+
+.weathericon{
+  margin-bottom: 20px;
+}
+
+#weatherdetails{
+  grid-column: 1 / 4;
+  margin-top: 5px;
+}
+
 </style>
